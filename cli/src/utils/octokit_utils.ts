@@ -11,6 +11,8 @@ import { Log } from './terminal_utils.js';
 const GITHUB_APP_ID = process.env.GH_APP_ID;
 const GITHUB_INSTALLATION_ID = process.env.GH_APP_INSTALLATION_ID;
 const GITHUB_APP_PRIVATE_KEY = process.env.GH_APP_PRIVATE_KEY;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = process.env.GITHUB_REPOSITORY_OWNER || 'statsig-io';
 
 const FFI_BASED_PACKAGES = new Set(['java', 'php', 'ffi', 'dotnet', 'go']);
 
@@ -26,12 +28,26 @@ type GhBranch = Awaited<ReturnType<Octokit['rest']['git']['getRef']>>['data'];
 type GHArtifact =
   RestEndpointMethodTypes['actions']['listWorkflowRunArtifacts']['response']['data']['artifacts'][number];
 
+export function getGitHubOwner(): string {
+  return GITHUB_OWNER;
+}
+
 export async function getOctokit() {
-  const token = await getInstallationToken();
+  const token = await getAuthToken();
 
   return new Octokit({
     auth: token,
   });
+}
+
+export async function getAuthToken() {
+  // Prefer GITHUB_TOKEN if available (works for forks)
+  if (GITHUB_TOKEN) {
+    return GITHUB_TOKEN;
+  }
+
+  // Fall back to GitHub App auth (Statsig's internal tooling)
+  return getInstallationToken();
 }
 
 export async function getInstallationToken() {
@@ -67,7 +83,7 @@ export async function getReleaseByVersion(
 ): Promise<GhRelease | null> {
   try {
     const { data } = await octokit.rest.repos.getReleaseByTag({
-      owner: 'statsig-io',
+      owner: getGitHubOwner(),
       repo,
       tag: version.toString(),
     });
@@ -88,7 +104,7 @@ export async function getBranchByVersion(
     const branchRef = `heads/${branch}`;
 
     const result = await octokit.rest.git.getRef({
-      owner: 'statsig-io',
+      owner: getGitHubOwner(),
       repo,
       ref: branchRef,
     });
@@ -157,7 +173,7 @@ export async function deleteReleaseAssetWithName(
   assetName: string,
 ) {
   const { data } = await octokit.rest.repos.listReleaseAssets({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo,
     release_id: releaseId,
     per_page: 100,
@@ -170,7 +186,7 @@ export async function deleteReleaseAssetWithName(
   }
 
   await octokit.rest.repos.deleteReleaseAsset({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo,
     asset_id: existingAsset.id,
   });
@@ -190,7 +206,7 @@ export async function uploadReleaseAsset(
 
   try {
     const response = await octokit.rest.repos.uploadReleaseAsset({
-      owner: 'statsig-io',
+      owner: getGitHubOwner(),
       repo,
       release_id: releaseId,
       name: name ?? path.basename(assetPath),
@@ -215,7 +231,7 @@ export async function createReleaseForVersion(
 ): Promise<{ result?: GhRelease; error?: any }> {
   try {
     const result = await octokit.rest.repos.createRelease({
-      owner: 'statsig-io',
+      owner: getGitHubOwner(),
       repo,
       tag_name: version.toString(),
       target_commitish: targetSha,
@@ -237,7 +253,7 @@ export async function getAllAssetsForRelease(
 ) {
   try {
     const { data } = await octokit.rest.repos.listReleaseAssets({
-      owner: 'statsig-io',
+      owner: getGitHubOwner(),
       repo,
       release_id: releaseId,
       per_page: 100,
@@ -257,7 +273,7 @@ export async function downloadReleaseAsset(
   assetId: number,
 ): Promise<ArrayBuffer> {
   const file = await octokit.rest.repos.getReleaseAsset({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo,
     asset_id: assetId,
     headers: {
@@ -276,7 +292,7 @@ export async function downloadArtifactToFile(
   filePath: string,
 ): Promise<{ data: ArrayBuffer; url: string }> {
   const response = (await octokit.rest.actions.downloadArtifact({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo,
     artifact_id: artifactId,
     archive_format: 'zip',
@@ -306,7 +322,7 @@ export async function getWorkflowRun(
   Log.stepBegin(`Getting workflow run ${options.workflowId}`);
 
   const response = await octokit.rest.actions.getWorkflowRun({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo: options.repository,
     run_id: Number(options.workflowId),
   });
@@ -345,7 +361,7 @@ export async function getWorkflowRunArtifacts(
   Log.stepBegin(`Getting workflow run artifacts`);
 
   const response = await octokit.rest.actions.listWorkflowRunArtifacts({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo: options.repository,
     run_id: Number(options.workflowId),
     per_page: 100,
@@ -455,7 +471,7 @@ export async function createPullRequestAgainstMain(
   },
 ) {
   const result = await octokit.rest.pulls.create({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo: options.repository,
     title: options.title,
     head: options.head,
@@ -476,7 +492,7 @@ export async function createPullRequestAgainstRc(
   },
 ) {
   const result = await octokit.rest.pulls.create({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo: options.repository,
     title: options.title,
     head: options.head,
@@ -493,7 +509,7 @@ export async function mergePullRequest(
   prNumber: number,
 ) {
   const result = await octokit.rest.pulls.merge({
-    owner: 'statsig-io',
+    owner: getGitHubOwner(),
     repo: repository,
     pull_number: prNumber,
     merge_method: 'squash',
