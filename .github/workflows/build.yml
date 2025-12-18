@@ -68,12 +68,6 @@ jobs:
         config: ${{ fromJson(needs.plan.outputs.build_matrix).config }}
         package:
           - node
-          - python
-          - ffi
-          - java
-          - dotnet
-          - elixir
-          - cpp
 
     timeout-minutes: 25
     runs-on: ${{ (contains(fromJson('["java", "dotnet", "ffi", "cpp"]'), matrix.package) && contains(matrix.config.target, 'linux')) && 'ubuntu-latest' || matrix.config.runner }}
@@ -335,14 +329,6 @@ jobs:
       matrix:
         package:
           - node
-          - python
-          - java
-          - php
-          - ffi
-          - elixir
-          - dotnet
-          - go
-          - cpp
 
     steps:
       - uses: actions/checkout@v4
