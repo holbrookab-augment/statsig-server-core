@@ -18,7 +18,7 @@ env:
   MATURIN_REPOSITORY: pypi
 
   # NPM Publishing
-  NPM_TOKEN: ${{ secrets.SIGSTAT_PUBLISH_NPM }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Java Publishing
   ORG_GRADLE_PROJECT_MAVEN_USERNAME: ${{ secrets.ORG_GRADLE_PROJECT_MAVEN_USERNAME }}
