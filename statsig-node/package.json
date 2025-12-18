@@ -1,6 +1,6 @@
 {
   "name": "@holbrookab_augment/statsig-node-core",
-  "version": "0.14.7",
+  "version": "0.14.8",
   "main": "index.js",
   "scripts": {
     "test": "jest --colors"
@@ -43,6 +43,17 @@
   },
   "engines": {
     "node": ">= 6.14.2 < 7 || >= 8.11.2 < 9 || >= 9.11.0 < 10 || >= 10.0.0"
+  },
+  "optionalDependencies": {
+    "@holbrookab_augment/statsig-node-core-darwin-arm64": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-darwin-x64": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-linux-arm64-gnu": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-linux-arm64-musl": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-linux-x64-gnu": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-linux-x64-musl": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-win32-arm64-msvc": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-win32-ia32-msvc": "0.14.8",
+    "@holbrookab_augment/statsig-node-core-win32-x64-msvc": "0.14.8"
   },
   "napi": {
     "binaryName": "statsig-node-core",
