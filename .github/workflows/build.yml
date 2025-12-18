@@ -45,6 +45,9 @@ env:
   
   # Docker
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  
+  # GitHub API (for artifact downloads)
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   # -------------------------------------------------------------------- [Plan]
