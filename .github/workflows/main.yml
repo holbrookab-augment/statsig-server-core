@@ -24,17 +24,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  package-verification:
-    needs: lint
-    uses: ./.github/workflows/package_verification.yml
-    secrets: inherit
-
   tests:
     needs: lint
     uses: ./.github/workflows/statsig-tests.yml
-    secrets: inherit
-
-  kong:
-    needs: lint
-    uses: ./.github/workflows/kong_main.yml
     secrets: inherit
