@@ -82,15 +82,15 @@ const DIR_STRUCTURE = {
 };
 
 const PACKAGE_MAPPING = {
-  'darwin-arm64': '@statsig/statsig-node-core-darwin-arm64',
-  'linux-arm64-gnu': '@statsig/statsig-node-core-linux-arm64-gnu',
-  'linux-arm64-musl': '@statsig/statsig-node-core-linux-arm64-musl',
-  'win32-ia32-msvc': '@statsig/statsig-node-core-win32-ia32-msvc',
-  'darwin-x64': '@statsig/statsig-node-core-darwin-x64',
-  'win32-x64-msvc': '@statsig/statsig-node-core-win32-x64-msvc',
-  'win32-arm64-msvc': '@statsig/statsig-node-core-win32-arm64-msvc',
-  'linux-x64-gnu': '@statsig/statsig-node-core-linux-x64-gnu',
-  'linux-x64-musl': '@statsig/statsig-node-core-linux-x64-musl',
+  'darwin-arm64': '@holbrookab_augment/statsig-node-core-darwin-arm64',
+  'linux-arm64-gnu': '@holbrookab_augment/statsig-node-core-linux-arm64-gnu',
+  'linux-arm64-musl': '@holbrookab_augment/statsig-node-core-linux-arm64-musl',
+  'win32-ia32-msvc': '@holbrookab_augment/statsig-node-core-win32-ia32-msvc',
+  'darwin-x64': '@holbrookab_augment/statsig-node-core-darwin-x64',
+  'win32-x64-msvc': '@holbrookab_augment/statsig-node-core-win32-x64-msvc',
+  'win32-arm64-msvc': '@holbrookab_augment/statsig-node-core-win32-arm64-msvc',
+  'linux-x64-gnu': '@holbrookab_augment/statsig-node-core-linux-x64-gnu',
+  'linux-x64-musl': '@holbrookab_augment/statsig-node-core-linux-x64-musl',
 };
 
 export async function nodePublish(options: PublisherOptions) {
