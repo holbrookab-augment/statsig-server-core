@@ -73,7 +73,8 @@ export function buildDockerImage(os: OS, arch: Arch = 'arm64') {
 
 export function getDockerImageTag(os: OS, arch: Arch): string {
   const { name } = getArchInfo(arch);
-  return `statsig/server-core-${os}-${name}`;
+  const dockerUsername = process.env.DOCKERHUB_USERNAME || 'statsig';
+  return `${dockerUsername}/server-core-${os}-${name}`;
 }
 
 export function getArchInfo(arch: Arch): ArchInfo {
