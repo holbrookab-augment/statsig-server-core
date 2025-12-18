@@ -1,5 +1,4 @@
-import HttpAgent from 'agentkeepalive';
-import HttpsAgent from 'agentkeepalive/https_agent';
+import HttpAgent, { HttpsAgent } from 'agentkeepalive';
 import { HttpProxyAgent, HttpsProxyAgent } from 'hpagent';
 import nodeFetch from 'node-fetch';
 
