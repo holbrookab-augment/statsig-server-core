@@ -1,6 +1,6 @@
 {
-  "name": "@statsig/statsig-node-core",
-  "version": "0.14.0",
+  "name": "@holbrookab-augment/statsig-node-core",
+  "version": "0.14.1",
   "main": "index.js",
   "scripts": {
     "test": "jest --colors"

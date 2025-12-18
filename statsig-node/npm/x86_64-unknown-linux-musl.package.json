@@ -1,5 +1,5 @@
 {
-    "name": "@statsig/statsig-node-core-linux-x64-musl",
+    "name": "@holbrookab-augment/statsig-node-core-linux-x64-musl",
     "version": "0.14.0",
     "repository": "https://github.com/statsig-io/statsig-server-core.git",
     "os": [
